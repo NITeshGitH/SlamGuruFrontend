@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Slam Guru - The Ultimate WWE Discord Bot</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class', // Enable class-based dark mode
+            theme: {
+                extend: {
+                    colors: {
+                        // Light Theme (default)
+                        'brand-bg': '#f0f2f5',       // Main background
+                        'brand-surface': '#ffffff',  // Card/Nav background
+                        'brand-border': '#e4e6eb',   // Hover/Border color
+                        'brand-accent': '#d97706',   // Accent color (a rich orange)
+                        'brand-text-primary': '#1c1e21',
+                        'brand-text-secondary': '#65676b',
+                        'discord-blurple': '#5865F2', // Discord brand color
+
+                        // Dark Theme (prefixed with 'dark-')
+                        'dark-brand-bg': '#16182d',
+                        'dark-brand-surface': '#1f223e',
+                        'dark-brand-border': '#1f2644',
+                        'dark-brand-accent': '#eba66f',
+                        'dark-brand-text-primary': '#e4e6eb',
+                        'dark-brand-text-secondary': '#b0b3b8',
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- Google Fonts: Bebas Neue for headings, Inter for body -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="bg-brand-bg text-brand-text-primary dark:bg-dark-brand-bg dark:text-dark-brand-text-primary">
+
+    <!-- Navigation Bar -->
+    <nav class="bg-brand-surface/80 dark:bg-dark-brand-surface/50 backdrop-blur-sm border-b border-brand-border dark:border-dark-brand-border sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <div class="flex items-center">
+                    <span class="font-bold text-2xl text-brand-accent" style="font-family: 'Bebas Neue'; letter-spacing: 1px;">SLAM GURU</span>
+                </div>
+                <!-- Desktop Menu -->
+                <div class="hidden md:flex items-center">
+                    <div class="ml-10 flex items-center space-x-4">
+                        <a href="#home" id="nav-home" class="text-brand-text-secondary dark:text-dark-brand-text-secondary hover:bg-brand-border dark:hover:bg-dark-brand-border hover:text-brand-text-primary dark:hover:text-white px-3 py-2 rounded-md text-sm font-medium">Home</a>
+                        <a href="#search" id="nav-search" class="text-brand-text-secondary dark:text-dark-brand-text-secondary hover:bg-brand-border dark:hover:bg-dark-brand-border hover:text-brand-text-primary dark:hover:text-white px-3 py-2 rounded-md text-sm font-medium">Card Search</a>
+                        <!-- Theme Toggle Button -->
+                        <button id="theme-toggle" class="p-2 rounded-md text-brand-text-secondary dark:text-dark-brand-text-secondary hover:bg-brand-border dark:hover:bg-dark-brand-border focus:outline-none">
+                            <svg id="theme-icon-light" class="h-6 w-6 hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" /></svg>
+                            <svg id="theme-icon-dark" class="h-6 w-6 hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" /></svg>
+                        </button>
+                    </div>
+                </div>
+                <!-- Mobile Menu Button -->
+                <div class="-mr-2 flex md:hidden">
+                    <!-- Theme Toggle for Mobile -->
+                    <button id="theme-toggle-mobile" class="p-2 rounded-md text-brand-text-secondary dark:text-dark-brand-text-secondary hover:bg-brand-border dark:hover:bg-dark-brand-border focus:outline-none">
+                        <svg id="theme-icon-light-mobile" class="h-6 w-6 hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" /></svg>
+                        <svg id="theme-icon-dark-mobile" class="h-6 w-6 hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" /></svg>
+                    </button>
+                    <button type="button" id="mobile-menu-button" class="bg-brand-border dark:bg-dark-brand-border inline-flex items-center justify-center p-2 rounded-md text-brand-text-secondary dark:text-dark-brand-text-secondary hover:text-brand-text-primary dark:hover:text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-brand-surface dark:focus:ring-offset-dark-brand-surface focus:ring-white" aria-controls="mobile-menu" aria-expanded="false">
+                        <span class="sr-only">Open main menu</span>
+                        <svg id="hamburger-icon" class="block h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                        </svg>
+                        <svg id="close-icon" class="hidden h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <!-- Mobile Menu, show/hide based on menu state. -->
+        <div class="md:hidden hidden" id="mobile-menu">
+            <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+                <a href="#home" id="mobile-nav-home" class="text-brand-text-secondary dark:text-dark-brand-text-secondary hover:bg-brand-border dark:hover:bg-dark-brand-border hover:text-brand-text-primary dark:hover:text-white block px-3 py-2 rounded-md text-base font-medium">Home</a>
+                <a href="#search" id="mobile-nav-search" class="text-brand-text-secondary dark:text-dark-brand-text-secondary hover:bg-brand-border dark:hover:bg-dark-brand-border hover:text-brand-text-primary dark:hover:text-white block px-3 py-2 rounded-md text-base font-medium">Card Search</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Home/Landing Page Section -->
+    <main id="home-section">
+        <!-- Hero Section -->
+        <section class="py-20 sm:py-32">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+                <div class="text-center md:text-left">
+                    <h1 class="text-5xl sm:text-6xl lg:text-7xl font-extrabold tracking-wider text-brand-text-primary dark:text-white">
+                        Bring the squared circle to <span class="text-brand-accent">Discord</span> with Slam Guru!
+                    </h1>
+                    <p class="mt-4 text-lg text-brand-text-secondary dark:text-dark-brand-text-secondary">
+                        Unleash the ultimate wrestling experience. Draft your dream team, collect iconic player cards, and dominate in thrilling matches against your friends. From strategic team building to electrifying gameplay, Slam Guru brings the action to your Discord server.
+                    </p>
+                    <a href="https://discord.com/api/oauth2/authorize?client_id=123456789012345678&permissions=8&scope=bot%20applications.commands" target="_blank" rel="noopener noreferrer" class="mt-8 inline-flex items-center justify-center gap-2 bg-discord-blurple text-white font-bold py-3 px-8 rounded-lg text-lg hover:opacity-90 transition duration-300">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M20.317 4.3698a19.7913 19.7913 0 00-4.8851-1.5152.0741.0741 0 00-.0785.0371c-.211.3753-.4464.8245-.618 1.2229a18.1165 18.1165 0 00-5.4844 0c-.1716-.3983-.407-.8476-.618-1.2229a.0741.0741 0 00-.0785-.0371 19.7913 19.7913 0 00-4.8851 1.5152.069.069 0 00-.0321.0277C.5334 9.0458-.319 13.5799.0992 18.0578a.0824.0824 0 00.0312.0561c2.0528 1.5076 4.0413 2.4228 5.9929 3.0294a.0777.0777 0 00.0842-.0276c.4616-.6304.8731-1.2952 1.227-2.0082a.0741.0741 0 00-.0416-.1057c-.6528-.2476-1.2743-.5495-1.8722-.8923a.0741.0741 0 01-.0076-.1277c.1258-.0943.2517-.1923.3718-.2914a.0741.0741 0 01.0776-.0105c3.9278 1.7933 8.18 1.7933 12.0614 0a.0741.0741 0 01.0776.0105c.1201.099.246.1971.3718.2914a.0741.0741 0 01-.0076.1277c-.5979.3428-1.2194.6447-1.8722.8923a.0741.0741 0 00-.0416.1057c.3539.713.7654 1.3778 1.227 2.0082a.0777.0777 0 00.0842.0276c1.9516-.6067 3.94-1.5219 5.9929-3.0294a.0824.0824 0 00.0312-.0561c.5004-5.177-.8382-9.6739-3.5485-13.6602a.069.069 0 00-.0321-.0277zM8.02 15.3312c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9744-2.419 2.1569-2.419s2.1569 1.0857 2.1569 2.419c.0001 1.3333-.9744 2.419-2.1569 2.419zm7.9748 0c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9744-2.419 2.1569-2.419s2.1569 1.0857 2.1569 2.419c0 1.3333-.9743 2.419-2.1569 2.419z"/>
+                        </svg>
+                        <span>Add To Discord</span>
+                    </a>
+                </div>
+                <!-- Placeholder for Logo/Image -->
+                <div class="flex justify-center items-center">
+                    <img src="Images\NewIcon.png" alt="Slam Guru Logo" class="rounded-full shadow-2xl bg-brand-surface dark:bg-dark-brand-surface">
+                </div>
+            </div>
+        </section>
+
+        <!-- Features Section -->
+        <section class="bg-brand-surface dark:bg-dark-brand-surface py-20 sm:py-24">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center">
+                    <h2 class="text-4xl font-bold tracking-widest text-brand-text-primary dark:text-white">Features</h2>
+                    <p class="mt-2 text-brand-text-secondary dark:text-dark-brand-text-secondary">Everything you need to become a champion.</p>
+                </div>
+                <div class="mt-12 grid gap-10 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
+                    <!-- Feature 1 -->
+                    <div class="text-center p-6 bg-brand-bg dark:bg-dark-brand-bg rounded-lg">
+                        <img src="Images\I11.png" alt="Collect Cards" class="w-full h-full object-cover rounded-md mb-4">
+                        <h3 class="text-2xl font-semibold text-brand-accent">Collect Players</h3>
+                        <p class="mt-2 text-brand-text-secondary dark:text-dark-brand-text-secondary">Build your collection with hundreds of cards from different eras and styles.</p>
+                    </div>
+                    <!-- Feature 2 -->
+                    <div class="text-center p-6 bg-brand-bg dark:bg-dark-brand-bg rounded-lg">
+                         <img src="Images\I1.png" alt="Simulate Matches" class="w-full h-full object-cover rounded-md mb-4">
+                        <h3 class="text-2xl font-semibold text-brand-accent">Claim Card</h3>
+                        <p class="mt-2 text-brand-text-secondary dark:text-dark-brand-text-secondary">Claim a new player card regularly to build your roster and strengthen your team.</p>
+                    </div>
+                    <!-- Feature 3 -->
+                    <div class="text-center p-6 bg-brand-bg dark:bg-dark-brand-bg rounded-lg">
+                        <img src="Images\I3.png" alt="Climb the Ranks" class="w-full h-full object-cover rounded-md mb-4">
+                        <h3 class="text-2xl font-semibold text-brand-accent">Climb the Ranks</h3>
+                        <p class="mt-2 text-brand-text-secondary dark:text-dark-brand-text-secondary">Prove you're the best manager and take your place at the top of the leaderboards.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Card Search Section -->
+    <main id="card-search-section" class="hidden">
+        <div class="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
+            <div class="text-center">
+                <h2 class="text-4xl font-bold tracking-widest text-brand-text-primary dark:text-white">Player Search</h2>
+                <p class="mt-2 text-brand-text-secondary dark:text-dark-brand-text-secondary">Find your favorite players and analyze their stats to build the ultimate team.</p>
+            </div>
+            
+            <!-- Search and Filter Controls -->
+            <div class="mt-8 p-4 bg-brand-surface dark:bg-dark-brand-bg rounded-lg flex flex-col sm:flex-row gap-4 justify-center items-center">
+                <div class="relative">
+                    <input type="text" id="search-input" placeholder="Search by player name..." class="w-full sm:w-72 px-4 py-2 pr-10 bg-brand-bg dark:bg-dark-brand-surface border border-brand-border dark:border-dark-brand-border rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-accent text-brand-text-primary dark:text-white" autocomplete="off">
+                    <span class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-400" viewBox="0 0 20 20" fill="currentColor">
+                            <path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd" />
+                        </svg>
+                    </span>
+                </div>
+                <button id="filter-button" class="relative p-2 bg-brand-border dark:bg-dark-brand-border text-brand-text-primary dark:text-white rounded-lg hover:opacity-90 transition duration-300">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z" />
+                    </svg>
+                    <span id="filter-indicator" class="absolute top-0 right-0 block h-2.5 w-2.5 rounded-full bg-brand-accent ring-2 ring-white hidden"></span>
+                </button>
+            </div>
+
+            <!-- Pagination Controls -->
+            <div id="pagination-controls" class="mt-8 p-3 bg-brand-surface dark:bg-dark-brand-bg rounded-lg flex justify-center items-center gap-4 hidden">
+                <button id="prev-button" class="p-2 bg-brand-border dark:bg-dark-brand-border text-brand-text-primary dark:text-white rounded-lg hover:opacity-90 transition duration-300 disabled:opacity-50 disabled:cursor-not-allowed">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
+                    </svg>
+                </button>
+                <span id="page-info" class="text-brand-text-secondary dark:text-dark-brand-text-secondary font-medium"></span>
+                <button id="next-button" class="p-2 bg-brand-border dark:bg-dark-brand-border text-brand-text-primary dark:text-white rounded-lg hover:opacity-90 transition duration-300 disabled:opacity-50 disabled:cursor-not-allowed">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+                    </svg>
+                </button>
+            </div>
+
+            <!-- Advanced Filter Modal -->
+            <div id="filter-modal" class="fixed inset-0 bg-gray-900 bg-opacity-75 flex items-center justify-center z-50 hidden">
+                <div class="bg-brand-surface dark:bg-dark-brand-surface rounded-lg shadow-xl p-6 w-11/12 md:w-2/3 lg:w-1/2 max-h-[90vh] overflow-y-auto border border-brand-border dark:border-dark-brand-border">
+                    <div class="flex justify-between items-center border-b border-brand-border dark:border-dark-brand-border pb-3 mb-4">
+                        <h3 class="text-2xl font-bold text-brand-text-primary dark:text-white" style="font-family: 'Bebas Neue';">Advanced Filters</h3>
+                        <button id="close-modal-button" class="text-brand-text-secondary dark:text-dark-brand-text-secondary hover:text-brand-text-primary dark:hover:text-white">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                            </svg>
+                        </button>
+                    </div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
+                        <!-- Sort By -->
+                        <div>
+                            <label for="modal-sort-select" class="block text-sm font-medium text-brand-text-secondary dark:text-dark-brand-text-secondary mb-1">Sort By</label>
+                            <select id="modal-sort-select" class="w-full px-3 py-2 bg-brand-bg dark:bg-dark-brand-border border border-brand-border dark:border-dark-brand-border rounded-md focus:outline-none focus:ring-2 focus:ring-brand-accent text-brand-text-primary dark:text-white">
+                                <option value="ovr-desc">OVR (High to Low)</option>
+                                <option value="ovr-asc">OVR (Low to High)</option>
+                                <option value="price-desc">Price (High to Low)</option>
+                                <option value="price-asc">Price (Low to High)</option>
+                                <option value="name-asc">Name (A-Z)</option>
+                                <option value="pow-desc">POW (High to Low)</option>
+                                <option value="tgh-desc">TGH (High to Low)</option>
+                                <option value="spd-desc">SPD (High to Low)</option>
+                                <option value="cha-desc">CHA (High to Low)</option>
+                            </select>
+                        </div>
+
+                        <!-- Price Range -->
+                        <div>
+                            <label class="block text-sm font-medium text-brand-text-secondary dark:text-dark-brand-text-secondary mb-1">Price Range</label>
+                            <div class="flex gap-2">
+                                <input type="number" id="min-price-input" placeholder="Min" min="0" class="w-1/2 px-3 py-2 bg-brand-bg dark:bg-dark-brand-border border border-brand-border dark:border-dark-brand-border rounded-md focus:outline-none focus:ring-2 focus:ring-brand-accent text-brand-text-primary dark:text-white">
+                                <input type="number" id="max-price-input" placeholder="Max" min="0" class="w-1/2 px-3 py-2 bg-brand-bg dark:bg-dark-brand-border border border-brand-border dark:border-dark-brand-border rounded-md focus:outline-none focus:ring-2 focus:ring-brand-accent text-brand-text-primary dark:text-white">
+                            </div>
+                        </div>
+
+                        <!-- Style Filter -->
+                        <div>
+                            <label for="style-select" class="block text-sm font-medium text-brand-text-secondary dark:text-dark-brand-text-secondary mb-1">Style</label>
+                            <select id="style-select" class="w-full px-3 py-2 bg-brand-bg dark:bg-dark-brand-border border border-brand-border dark:border-dark-brand-border rounded-md focus:outline-none focus:ring-2 focus:ring-brand-accent text-brand-text-primary dark:text-white">
+                                <option value="">All Styles</option>
+                                <option value="Technician">Technician</option>
+                                <option value="Brawler">Brawler</option>
+                                <option value="High Flyer">High Flyer</option>
+                                <option value="Heavyweight">Heavyweight</option>
+                            </select>
+                        </div>
+
+                        <!-- Card Type Filter -->
+                        <div>
+                            <label for="card-type-input" class="block text-sm font-medium text-brand-text-secondary dark:text-dark-brand-text-secondary mb-1">Card Type</label>
+                            <input type="text" id="card-type-input" placeholder="e.g., Legendary, Alumni" class="w-full px-3 py-2 bg-brand-bg dark:bg-dark-brand-border border border-brand-border dark:border-dark-brand-border rounded-md focus:outline-none focus:ring-2 focus:ring-brand-accent text-brand-text-primary dark:text-white" autocomplete="off">
+                        </div>
+                    </div>
+
+                    <div class="flex justify-end gap-4 mt-6">
+                        <button id="clear-filters-button" class="bg-brand-border dark:bg-dark-brand-border text-brand-text-primary dark:text-white font-bold py-2 px-4 rounded-lg hover:opacity-90 transition duration-300">
+                            Clear Filters
+                        </button>
+                        <button id="apply-filters-button" class="bg-brand-accent text-white dark:text-brand-text-primary font-bold py-2 px-4 rounded-lg hover:opacity-90 transition duration-300">
+                            Apply Filters
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card Grid -->
+            <div id="card-container" class="mt-8 grid gap-x-6 gap-y-12 grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4">
+                <!-- Cards will be injected here by JavaScript -->
+            </div>
+        </div>
+    </main>
+
+    <footer class="bg-brand-surface dark:bg-dark-brand-surface border-t border-brand-border dark:border-dark-brand-border mt-20" id="page-footer">
+        <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8 text-center text-brand-text-secondary dark:text-dark-brand-text-secondary">
+            <p>&copy; 2025 Slam Guru. All Rights Reserved.</p>
+        </div>
+    </footer>
+
+    <!-- Scroll to Top Button -->
+    <button id="scroll-to-top" class="hidden fixed bottom-5 right-5 bg-brand-accent text-white dark:text-brand-text-primary p-3 rounded-full shadow-lg hover:opacity-90 transition-opacity z-50">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M5 15l7-7 7 7" />
+        </svg>
+    </button>
+
+    <!-- Custom JS -->
+    <script src="script.js"></script>
+
+</body>
+</html>

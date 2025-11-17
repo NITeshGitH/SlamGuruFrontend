@@ -1,0 +1,138 @@
+html {
+    scroll-behavior: smooth;
+}
+body.dark {
+    font-family: 'Inter', sans-serif;
+    background-color: #16182d;
+    transition: background-image 0.5s ease-in-out;
+}
+h1, h2, h3 {
+    font-family: 'Bebas Neue', sans-serif;
+}
+
+.card-item {
+    display: flex;
+    flex-direction: column;
+}
+
+body.modal-open {
+    overflow: hidden;
+}
+
+.loader-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 300px;
+    grid-column: 1 / -1;
+}
+
+.spinner {
+    border: 5px solid rgba(255, 255, 255, 0.2);
+    border-left-color: #eba66f;
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+.image-placeholder {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 250px;
+    background-color: #e4e6eb;
+    color: #d97706;
+    text-align: center;
+    padding: 1rem;
+}
+
+.image-placeholder-icon {
+    width: 40px;
+    height: 40px;
+    margin-bottom: 0.75rem;
+}
+
+.dark .image-placeholder {
+    background-color: #1f2644;
+    color: #eba66f;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+.card-enter-animation {
+    animation-name: fadeIn;
+    animation-duration: 0.5s;
+    animation-timing-function: ease-out;
+    animation-fill-mode: forwards;
+}
+
+.dark .pattern-dots {
+    background-image: radial-gradient(circle, rgba(255, 255, 255, 0.05) 1px, transparent 1.5px), radial-gradient(circle, rgba(255, 255, 255, 0.03) 1px, transparent 1.5px);
+    background-size: 60px 60px, 110px 110px;
+    animation: pattern-move-dots 45s linear infinite;
+}
+.pattern-dots {
+    background-image: radial-gradient(circle, rgba(0, 0, 0, 0.06) 1px, transparent 1.5px), radial-gradient(circle, rgba(0, 0, 0, 0.03) 1px, transparent 1.5px);
+    background-size: 60px 60px, 110px 110px;
+    animation: pattern-move-dots 45s linear infinite;
+}
+@keyframes pattern-move-dots {
+    from { background-position: 0 0; }
+    to { background-position: -60px -60px; }
+}
+
+.dark .pattern-lines {
+    background-image: repeating-linear-gradient(45deg, rgba(255, 255, 255, 0.02), rgba(255, 255, 255, 0.02) 1px, transparent 1px, transparent 50px);
+    animation: pattern-move-lines 60s linear infinite;
+}
+
+.pattern-lines {
+    background-image: repeating-linear-gradient(45deg, rgba(0, 0, 0, 0.05), rgba(0, 0, 0, 0.05) 1px, transparent 1px, transparent 50px);
+    animation: pattern-move-lines 60s linear infinite;
+}
+@keyframes pattern-move-lines {
+    from { background-position: 0 0; }
+    to { background-position: 50px 0; }
+}
+
+@keyframes modal-fade-in-scale-up {
+    from { opacity: 0; transform: scale(0.95); }
+    to { opacity: 1; transform: scale(1); }
+}
+.modal-enter-animation {
+    animation: modal-fade-in-scale-up 0.2s ease-out forwards;
+}
+
+.dark .modal-gradient-border {
+    position: relative;
+    background: #1f223e;
+    z-index: 1;
+}
+.dark .modal-gradient-border::before {
+    content: '';
+    position: absolute;
+    top: -1px; right: -1px; bottom: -1px; left: -1px;
+    background: linear-gradient(135deg, #1f2644, #eba66f, #1f2644);
+    background-size: 200% 200%;
+    border-radius: 0.5rem;
+    z-index: -1;
+    animation: gradient-animation 8s ease infinite;
+}
+
+input[type=number]::-webkit-inner-spin-button, 
+input[type=number]::-webkit-outer-spin-button { 
+  -webkit-appearance: none;
+  margin: 0; 
+}
