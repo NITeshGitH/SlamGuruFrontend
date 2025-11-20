@@ -1,4 +1,4 @@
-# Slam Guru - Website Frontend
+# Slam Guru
 
 This is the official landing page for "Slam Guru - The Ultimate WWE Discord Bot". The website provides a feature overview, directs users to add the bot to their Discord server, and includes a dynamic interface to search and filter through all available player cards.
 
