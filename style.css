@@ -1,18 +1,65 @@
 html {
     scroll-behavior: smooth;
 }
-body.dark {
-    font-family: 'Inter', sans-serif;
-    background-color: #16182d;
-    transition: background-image 0.5s ease-in-out;
-}
-h1, h2, h3 {
-    font-family: 'Bebas Neue', sans-serif;
+
+body {
+    font-family: 'Montserrat', sans-serif;
+    transition: background-color 0.3s ease, color 0.3s ease;
 }
 
-.card-item {
-    display: flex;
-    flex-direction: column;
+body.dark {
+    background-color: #0f172a;
+    /* Matches dark-brand-bg */
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    font-family: 'Montserrat', sans-serif;
+    letter-spacing: 0.05em;
+}
+
+/* Glassmorphism Utilities */
+.glass {
+    background: rgba(255, 255, 255, 0.7);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.dark .glass {
+    background: rgba(30, 41, 59, 0.7);
+    /* Slate-800 with opacity */
+    border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+    width: 10px;
+}
+
+::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #cbd5e1;
+    border-radius: 5px;
+}
+
+.dark ::-webkit-scrollbar-thumb {
+    background: #475569;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #94a3b8;
+}
+
+.dark ::-webkit-scrollbar-thumb:hover {
+    background: #64748b;
 }
 
 body.modal-open {
@@ -37,7 +84,9 @@ body.modal-open {
 }
 
 @keyframes spin {
-    to { transform: rotate(360deg); }
+    to {
+        transform: rotate(360deg);
+    }
 }
 
 .image-placeholder {
@@ -67,10 +116,12 @@ body.modal-open {
     from {
         opacity: 0;
     }
+
     to {
         opacity: 1;
     }
 }
+
 .card-enter-animation {
     animation-name: fadeIn;
     animation-duration: 0.5s;
@@ -83,14 +134,21 @@ body.modal-open {
     background-size: 60px 60px, 110px 110px;
     animation: pattern-move-dots 45s linear infinite;
 }
+
 .pattern-dots {
     background-image: radial-gradient(circle, rgba(0, 0, 0, 0.06) 1px, transparent 1.5px), radial-gradient(circle, rgba(0, 0, 0, 0.03) 1px, transparent 1.5px);
     background-size: 60px 60px, 110px 110px;
     animation: pattern-move-dots 45s linear infinite;
 }
+
 @keyframes pattern-move-dots {
-    from { background-position: 0 0; }
-    to { background-position: -60px -60px; }
+    from {
+        background-position: 0 0;
+    }
+
+    to {
+        background-position: -60px -60px;
+    }
 }
 
 .dark .pattern-lines {
@@ -102,15 +160,29 @@ body.modal-open {
     background-image: repeating-linear-gradient(45deg, rgba(0, 0, 0, 0.05), rgba(0, 0, 0, 0.05) 1px, transparent 1px, transparent 50px);
     animation: pattern-move-lines 60s linear infinite;
 }
+
 @keyframes pattern-move-lines {
-    from { background-position: 0 0; }
-    to { background-position: 50px 0; }
+    from {
+        background-position: 0 0;
+    }
+
+    to {
+        background-position: 50px 0;
+    }
 }
 
 @keyframes modal-fade-in-scale-up {
-    from { opacity: 0; transform: scale(0.95); }
-    to { opacity: 1; transform: scale(1); }
+    from {
+        opacity: 0;
+        transform: scale(0.95);
+    }
+
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
 }
+
 .modal-enter-animation {
     animation: modal-fade-in-scale-up 0.2s ease-out forwards;
 }
@@ -120,10 +192,14 @@ body.modal-open {
     background: #1f223e;
     z-index: 1;
 }
+
 .dark .modal-gradient-border::before {
     content: '';
     position: absolute;
-    top: -1px; right: -1px; bottom: -1px; left: -1px;
+    top: -1px;
+    right: -1px;
+    bottom: -1px;
+    left: -1px;
     background: linear-gradient(135deg, #1f2644, #eba66f, #1f2644);
     background-size: 200% 200%;
     border-radius: 0.5rem;
@@ -131,8 +207,17 @@ body.modal-open {
     animation: gradient-animation 8s ease infinite;
 }
 
-input[type=number]::-webkit-inner-spin-button, 
-input[type=number]::-webkit-outer-spin-button { 
-  -webkit-appearance: none;
-  margin: 0; 
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+#card-container * {
+    font-family: 'Montserrat', sans-serif !important;
+}
+
+#card-container h3 {
+    font-size: 1rem !important;
+    line-height: 1.4rem !important;
 }

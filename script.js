@@ -19,7 +19,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const darkIcon = document.getElementById('theme-icon-dark');
     const lightIconMobile = document.getElementById('theme-icon-light-mobile');
     const darkIconMobile = document.getElementById('theme-icon-dark-mobile');
-    
+
     // --- New Filter Modal Elements ---
     const filterButton = document.getElementById('filter-button');
     const filterIndicator = document.getElementById('filter-indicator');
@@ -27,6 +27,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const closeModalButton = document.getElementById('close-modal-button');
     const modalSortSelect = document.getElementById('modal-sort-select');
     const minPriceInput = document.getElementById('min-price-input');
+    const modalContent = document.getElementById('filter-modal-content');
     const maxPriceInput = document.getElementById('max-price-input');
     const styleSelect = document.getElementById('style-select');
     const cardTypeInput = document.getElementById('card-type-input');
@@ -153,16 +154,26 @@ document.addEventListener('DOMContentLoaded', () => {
     filterButton.addEventListener('click', () => {
         filterModal.classList.remove('hidden');
         document.body.classList.add('modal-open');
+        // Trigger the animation for the content
+        setTimeout(() => {
+            modalContent.classList.remove('opacity-0', 'scale-95');
+            modalContent.classList.add('opacity-100', 'scale-100');
+        }, 10); // A tiny delay ensures the transition is applied correctly
     });
     closeModalButton.addEventListener('click', () => {
-        filterModal.classList.add('hidden');
-        document.body.classList.remove('modal-open');
+        // Reverse the animation
+        modalContent.classList.remove('opacity-100', 'scale-100');
+        modalContent.classList.add('opacity-0', 'scale-95');
+        // Hide the modal after the animation finishes
+        setTimeout(() => {
+            filterModal.classList.add('hidden');
+            document.body.classList.remove('modal-open');
+        }, 300); // Match this duration to your transition duration
     });
     applyFiltersButton.addEventListener('click', () => {
         currentPage = 1; // Reset to first page when applying filters
         renderCards();
-        filterModal.classList.add('hidden'); // Close modal after applying filters
-        document.body.classList.remove('modal-open');
+        closeModalButton.click();
         updateFilterIndicator();
     });
     clearFiltersButton.addEventListener('click', clearFilters);
@@ -209,7 +220,7 @@ document.addEventListener('DOMContentLoaded', () => {
             allCards = await response.json();
 
             cardsLoaded = true; // Mark as loaded
-            
+
             renderCards(); // Initial render
 
         } catch (error) {
@@ -239,11 +250,11 @@ document.addEventListener('DOMContentLoaded', () => {
         // Filter by player name
         const searchTerm = searchInput.value.toLowerCase();
         if (searchTerm) {
-            filteredCards = filteredCards.filter(card => 
+            filteredCards = filteredCards.filter(card =>
                 card.playerName.toLowerCase().includes(searchTerm)
             );
         }
-        
+
         // Filter by price range
         const minPrice = parseFloat(minPriceInput.value);
         const maxPrice = parseFloat(maxPriceInput.value);
@@ -267,7 +278,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 card.cardType.toLowerCase().includes(cardTypeSearchTerm)
             );
         }
-        
+
         return filteredCards;
     }
 
@@ -313,7 +324,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const totalPages = Math.ceil(cards.length / cardsPerPage);
         const startIndex = (currentPage - 1) * cardsPerPage;
         const endIndex = startIndex + cardsPerPage;
-        
+
         // Update pagination controls before returning the slice
         updatePaginationControls(cards.length, totalPages);
 
@@ -339,37 +350,23 @@ document.addEventListener('DOMContentLoaded', () => {
         cardContainer.innerHTML = '';
 
         if (cards.length === 0) {
-            cardContainer.innerHTML = `<p class="text-center text-brand-text-secondary dark:text-dark-brand-text-secondary col-span-full">No players match your criteria.</p>`;
+            cardContainer.innerHTML = `<p class="text-center text-brand-text-secondary dark:text-dark-brand-text-secondary col-span-full text-xl">No players match your criteria.</p>`;
             return;
         }
 
         cards.forEach((card, index) => {
             const cardElement = document.createElement('div');
             // Start with opacity-0 and translate-y-5 for the entrance effect
-            cardElement.className = 'bg-brand-surface dark:bg-dark-brand-surface rounded-lg shadow-lg overflow-hidden transform hover:scale-105 transition-transform duration-300 card-item opacity-0 translate-y-5';
+            cardElement.className = 'bg-brand-surface dark:bg-dark-brand-surface rounded-2xl shadow-lg border border-brand-border dark:border-dark-brand-border overflow-hidden transform hover:scale-105 transition-all duration-300 card-item opacity-0 translate-y-5 hover:shadow-2xl hover:shadow-brand-primary/20 group';
             cardElement.classList.add('card-enter-animation');
             cardElement.style.animationDelay = `${index * 50}ms`; // Staggered delay
 
             // Create image element and handle error
-            const img = document.createElement('img');
-            img.src = card.cardImageUrl;
-            img.alt = card.playerName;
-            img.className = 'w-full object-cover';
-
-            img.onerror = function() {
-                // Create a placeholder div
-                const placeholder = document.createElement('div');
-                placeholder.className = 'image-placeholder';
-                placeholder.innerHTML = `
-                    <svg class="image-placeholder-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
-                        <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd" />
-                    </svg>
-                    <span class="font-semibold">${card.playerName}</span>
-                `;
-
-                // Replace the broken image with the placeholder
-                this.parentNode.replaceChild(placeholder, this);
-            };
+            const imageContainer = document.createElement('div');
+            imageContainer.className = 'relative aspect-square overflow-hidden'; // Use aspect-square for a 1:1 ratio
+            imageContainer.innerHTML = `
+                <img src="${card.cardImageUrl}" alt="${card.playerName}" class="w-full h-full object-contain transition-transform duration-500 group-hover:scale-110" onerror="this.onerror=null; this.parentElement.innerHTML='<div class=\\'flex flex-col justify-center items-center h-full bg-brand-bg dark:bg-dark-brand-bg text-brand-text-secondary\\'><svg class=\\'w-12 h-12 mb-2\\' fill=\\'none\\' stroke=\\'currentColor\\' viewBox=\\'0 0 24 24\\'><path stroke-linecap=\\'round\\' stroke-linejoin=\\'round\\' stroke-width=\\'2\\' d=\\'M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z\\'/></svg><span>${card.playerName}</span></div>'">
+            `;
 
             // After a short delay, remove the initial transform to trigger the slide-up transition
             setTimeout(() => {
@@ -378,35 +375,51 @@ document.addEventListener('DOMContentLoaded', () => {
 
             // Create the rest of the card content
             const cardContent = document.createElement('div');
-            cardContent.className = 'p-4 flex flex-col flex-grow';
+            cardContent.className = 'p-6 flex flex-col flex-grow relative';
             cardContent.innerHTML = `
-                <div class="p-4 flex flex-col flex-grow">
-                    <div class="flex justify-between items-baseline">
-                        <h3 class="text-xl font-bold text-brand-text-primary dark:text-white" style="font-family: 'Bebas Neue'; letter-spacing: .5px;">${card.playerName}</h3>
-                        <span class="font-bold text-xl text-green-300" style="font-family: 'Bebas Neue';">${new Intl.NumberFormat().format(card.value)}</span>
+                <div class="flex justify-between items-start mb-2">
+                    <div>
+                        <h3 class="text-2xl font-bold text-brand-text-primary dark:text-white leading-tight" style="font-family: 'Bebas Neue'; letter-spacing: .5px;">${card.playerName}</h3>
+                        <p class="text-sm text-brand-primary dark:text-brand-accent font-medium">${card.style}</p>
                     </div>
-                    <div class="flex justify-between items-baseline text-sm text-brand-text-secondary dark:text-dark-brand-text-secondary mt-1">
-                        <p>OVR: <span class="font-bold text-brand-text-primary dark:text-white">${card.ovr}</span></p>
-                        <p>Type: <span class="font-bold text-brand-text-primary dark:text-white">${card.cardType}</span></p>
+                    <div class="bg-brand-bg dark:bg-dark-brand-bg px-3 py-1 rounded-lg border border-brand-border dark:border-dark-brand-border">
+                        <span class="font-bold text-lg text-brand-text-primary dark:text-white" style="font-family: 'Bebas Neue';">${card.ovr}</span>
+                        <span class="text-xs text-brand-text-secondary uppercase ml-1">OVR</span>
                     </div>
-                    <p class="text-sm text-brand-accent">${card.style}</p>
-                    
-                    <!-- Improved Stat Display -->
-                    <div class="mt-4 pt-4 border-t border-brand-border dark:border-dark-brand-border space-y-2 text-sm">
-                        <div class="flex justify-between">
-                            <span class="font-semibold text-brand-text-secondary dark:text-dark-brand-text-secondary">Power (POW)</span><span class="font-bold text-brand-text-primary dark:text-white">${card.pow}</span></div>
-                        <div class="flex justify-between">
-                            <span class="font-semibold text-brand-text-secondary dark:text-dark-brand-text-secondary">Toughness (TGH)</span><span class="font-bold text-brand-text-primary dark:text-white">${card.tgh}</span></div>
-                        <div class="flex justify-between">
-                            <span class="font-semibold text-brand-text-secondary dark:text-dark-brand-text-secondary">Speed (SPD)</span><span class="font-bold text-brand-text-primary dark:text-white">${card.spd}</span></div>
-                        <div class="flex justify-between">
-                            <span class="font-semibold text-brand-text-secondary dark:text-dark-brand-text-secondary">Charisma (CHA)</span><span class="font-bold text-brand-text-primary dark:text-white">${card.cha}</span></div>
+                </div>
+                
+                <div class="mb-4">
+                    <span class="inline-block px-2 py-0.5 rounded text-xs font-semibold bg-brand-secondary/10 text-brand-secondary border border-brand-secondary/20">${card.cardType}</span>
+                </div>
+
+                <!-- Improved Stat Display -->
+                <div class="grid grid-cols-2 gap-3 text-sm mt-auto">
+                    <div class="flex justify-between items-center p-2 rounded bg-brand-bg dark:bg-dark-brand-bg">
+                        <span class="text-brand-text-secondary text-xs font-bold uppercase">POW</span>
+                        <span class="font-bold text-brand-text-primary dark:text-white">${card.pow}</span>
                     </div>
+                    <div class="flex justify-between items-center p-2 rounded bg-brand-bg dark:bg-dark-brand-bg">
+                        <span class="text-brand-text-secondary text-xs font-bold uppercase">TGH</span>
+                        <span class="font-bold text-brand-text-primary dark:text-white">${card.tgh}</span>
+                    </div>
+                    <div class="flex justify-between items-center p-2 rounded bg-brand-bg dark:bg-dark-brand-bg">
+                        <span class="text-brand-text-secondary text-xs font-bold uppercase">SPD</span>
+                        <span class="font-bold text-brand-text-primary dark:text-white">${card.spd}</span>
+                    </div>
+                    <div class="flex justify-between items-center p-2 rounded bg-brand-bg dark:bg-dark-brand-bg">
+                        <span class="text-brand-text-secondary text-xs font-bold uppercase">CHA</span>
+                        <span class="font-bold text-brand-text-primary dark:text-white">${card.cha}</span>
+                    </div>
+                </div>
+                
+                <div class="mt-4 pt-4 border-t border-brand-border dark:border-dark-brand-border flex justify-between items-center">
+                    <span class="text-brand-text-secondary text-sm">Value</span>
+                    <span class="font-bold text-xl text-brand-accent dark:text-brand-primary" style="font-family: 'Bebas Neue';">$${new Intl.NumberFormat().format(card.value)}</span>
                 </div>
             `;
 
             // Assemble the card
-            cardElement.appendChild(img);
+            cardElement.appendChild(imageContainer);
             cardElement.appendChild(cardContent);
             cardContainer.appendChild(cardElement);
         });
